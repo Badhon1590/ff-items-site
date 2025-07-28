@@ -15,14 +15,35 @@
 
   <script>
     fetch('items.json')
-      .then(res => res.json())
-      .then(data => {
-        let html = '';
-        data.forEach(item => {
-          html += `<div class="item">
+  .then(res => res.json())
+  .then(data => {
+    const itemsDiv = document.getElementById('items');
+    const searchInput = document.getElementById('search');
+
+    function displayItems(filteredItems) {
+      let html = '';
+      filteredItems.forEach(item => {
+        html += `<div class="item">
                     <h2>${item.name}</h2>
                     <p>Code: ${item.code}</p>
                     <p>${item.description}</p>
+                 </div>`;
+      });
+      itemsDiv.innerHTML = html;
+    }
+
+    displayItems(data);
+
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.toLowerCase();
+      const filtered = data.filter(item => 
+        item.name.toLowerCase().includes(query) || 
+        item.code.toLowerCase().includes(query)
+      );
+      displayItems(filtered);
+    });
+  });
+
                   </div>`;
         });
         document.getElementById('items').innerHTML = html;
