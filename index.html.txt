@@ -1,43 +1,72 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Free Fire Items</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Free Fire Items List</title>
   <style>
-    body { font-family: Arial; background: #111; color: #fff; text-align: center; }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: #fff;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
     input#search {
-      padding: 8px; width: 300px; margin: 20px auto; border-radius: 5px; border: none; display: block;
+      padding: 10px;
+      width: 300px;
+      border-radius: 8px;
+      border: none;
       font-size: 16px;
+      margin-bottom: 20px;
+      outline: none;
     }
     .item {
-      background: #222; margin: 10px auto; padding: 15px; border-radius: 8px; max-width: 400px; text-align: left;
+      background-color: #222;
+      margin: 10px auto;
+      padding: 15px;
+      border-radius: 10px;
+      max-width: 400px;
+      text-align: left;
+      box-shadow: 0 0 8px #444;
+      transition: background-color 0.3s ease;
+    }
+    .item:hover {
+      background-color: #333;
+    }
+    h1 {
+      margin-bottom: 30px;
     }
   </style>
 </head>
 <body>
   <h1>Free Fire Items List</h1>
-  <input type="text" id="search" placeholder="Search items by name or code">
+  <input type="text" id="search" placeholder="Search items by name or code" />
 
-  <div id="items"></div>
+  <div id="items">Loading items...</div>
 
   <script>
     fetch('items.json')
-      .then(res => res.json())
+      .then(response => response.json())
       .then(data => {
         const itemsDiv = document.getElementById('items');
         const searchInput = document.getElementById('search');
 
         function displayItems(items) {
-          if(items.length === 0) {
-            itemsDiv.innerHTML = '<p>No items found</p>';
+          if (items.length === 0) {
+            itemsDiv.innerHTML = '<p>No items found.</p>';
             return;
           }
           let html = '';
           items.forEach(item => {
-            html += `<div class="item">
-                      <h2>${item.name}</h2>
-                      <p><strong>Code:</strong> ${item.code}</p>
-                      <p>${item.description}</p>
-                    </div>`;
+            html += `
+              <div class="item">
+                <h2>${item.name}</h2>
+                <p><strong>Code:</strong> ${item.code}</p>
+                <p>${item.description}</p>
+              </div>
+            `;
           });
           itemsDiv.innerHTML = html;
         }
@@ -46,16 +75,16 @@
 
         searchInput.addEventListener('input', () => {
           const query = searchInput.value.toLowerCase();
-          const filtered = data.filter(item => 
-            item.name.toLowerCase().includes(query) || 
+          const filtered = data.filter(item =>
+            item.name.toLowerCase().includes(query) ||
             item.code.toLowerCase().includes(query)
           );
           displayItems(filtered);
         });
       })
-      .catch(err => {
+      .catch(error => {
         document.getElementById('items').innerHTML = '<p>Error loading items.</p>';
-        console.error(err);
+        console.error('Error fetching items.json:', error);
       });
   </script>
 </body>
