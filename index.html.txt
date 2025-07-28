@@ -4,49 +4,58 @@
   <title>Free Fire Items</title>
   <style>
     body { font-family: Arial; background: #111; color: #fff; text-align: center; }
-    .item { background: #222; margin: 10px; padding: 15px; border-radius: 8px; }
+    input#search {
+      padding: 8px; width: 300px; margin: 20px auto; border-radius: 5px; border: none; display: block;
+      font-size: 16px;
+    }
+    .item {
+      background: #222; margin: 10px auto; padding: 15px; border-radius: 8px; max-width: 400px; text-align: left;
+    }
   </style>
 </head>
-<input type="text" id="search" placeholder="Search items by name or code" style="padding:8px; width: 300px; margin-bottom: 20px; border-radius: 5px; border:none;">
-
 <body>
   <h1>Free Fire Items List</h1>
+  <input type="text" id="search" placeholder="Search items by name or code">
+
   <div id="items"></div>
 
   <script>
     fetch('items.json')
-  .then(res => res.json())
-  .then(data => {
-    const itemsDiv = document.getElementById('items');
-    const searchInput = document.getElementById('search');
+      .then(res => res.json())
+      .then(data => {
+        const itemsDiv = document.getElementById('items');
+        const searchInput = document.getElementById('search');
 
-    function displayItems(filteredItems) {
-      let html = '';
-      filteredItems.forEach(item => {
-        html += `<div class="item">
-                    <h2>${item.name}</h2>
-                    <p>Code: ${item.code}</p>
-                    <p>${item.description}</p>
-                 </div>`;
-      });
-      itemsDiv.innerHTML = html;
-    }
+        function displayItems(items) {
+          if(items.length === 0) {
+            itemsDiv.innerHTML = '<p>No items found</p>';
+            return;
+          }
+          let html = '';
+          items.forEach(item => {
+            html += `<div class="item">
+                      <h2>${item.name}</h2>
+                      <p><strong>Code:</strong> ${item.code}</p>
+                      <p>${item.description}</p>
+                    </div>`;
+          });
+          itemsDiv.innerHTML = html;
+        }
 
-    displayItems(data);
+        displayItems(data);
 
-    searchInput.addEventListener('input', () => {
-      const query = searchInput.value.toLowerCase();
-      const filtered = data.filter(item => 
-        item.name.toLowerCase().includes(query) || 
-        item.code.toLowerCase().includes(query)
-      );
-      displayItems(filtered);
-    });
-  });
-
-                  </div>`;
+        searchInput.addEventListener('input', () => {
+          const query = searchInput.value.toLowerCase();
+          const filtered = data.filter(item => 
+            item.name.toLowerCase().includes(query) || 
+            item.code.toLowerCase().includes(query)
+          );
+          displayItems(filtered);
         });
-        document.getElementById('items').innerHTML = html;
+      })
+      .catch(err => {
+        document.getElementById('items').innerHTML = '<p>Error loading items.</p>';
+        console.error(err);
       });
   </script>
 </body>
