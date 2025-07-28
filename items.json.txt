@@ -10,5 +10,11 @@
     "name": "Weapon Skin",
     "code": "WSK-2025",
     "description": "Legendary weapon skin"
+  },
+  {
+    "id": "FF003",
+    "name": "Elite Pass",
+    "code": "EP-2025",
+    "description": "Premium rewards unlock"
   }
 ]
