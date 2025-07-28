@@ -1,0 +1,14 @@
+[
+  {
+    "id": "FF001",
+    "name": "Diamond Royale Bundle",
+    "code": "DRB-2025",
+    "description": "Exclusive bundle for Free Fire"
+  },
+  {
+    "id": "FF002",
+    "name": "Weapon Skin",
+    "code": "WSK-2025",
+    "description": "Legendary weapon skin"
+  }
+]
